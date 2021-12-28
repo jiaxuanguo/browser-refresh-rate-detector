@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>detect refresh rate</title>
+    <script defer>
+      const MAX_LENGTH = 1000
+      const THRESHOLD = 50
+      let timestamps = []
+      let lastFps
+      function loop(timestamp) {
+        if (timestamps.length >= MAX_LENGTH) {
+          timestamps.unshift()
+        }
+        timestamps.push(timestamp)
+        if (timestamps.length >= THRESHOLD) {
+          const fps = '' + Math.round(THRESHOLD / (timestamp - timestamps[timestamps.length - THRESHOLD]) * 1000)
+          if (fps !== lastFps) {
+            lastFps = fps
+            document.querySelector('#fps').innerHTML = fps
+          }
+        }
+        window.requestAnimationFrame(loop)
+      }
+      window.requestAnimationFrame(loop)
+    </script>
+</head>
+<body>
+  <div id="fps"></div>
+</body>
+</html>
